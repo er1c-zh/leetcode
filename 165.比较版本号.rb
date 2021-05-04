@@ -33,10 +33,10 @@ def compare_version(version1, version2)
     elsif vv1.length < vv2.length
       return -1
     elsif vv1 == vv2
-        i += 1
-        next
+      i += 1
+      next
     else
-        return vv1 > vv2 ? 1 : -1
+      return vv1 > vv2 ? 1 : -1
     end
   end
   return 0
