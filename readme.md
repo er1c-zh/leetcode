@@ -15,7 +15,7 @@ Line 43 in solution.rb (insert)
 Line 180 in solution.rb (<main>)
 ```
 
-easy but NOT easy
+## some interesting easy problems
 
 1. 169
 1. 172
