@@ -9,7 +9,10 @@
 # @return {String}
 def getKmp(s)
   kmp = Array.new(s.length) { 0 }
-  for i in 1...s.length
+  if s.length <= 2
+    return kmp
+  end
+  for i in 2...s.length
     kmp[i] = kmp[i - 1] + (s[kmp[i - 1]] == s[i - 1] ? 1 : 0)
   end
   return kmp
@@ -24,19 +27,20 @@ def shortest_palindrome(s)
   rev = s.reverse
 
   i = 0
+  delta = 0
   while i < s.length
-    delta = 0
     isFail = false
     while delta < s.length - i
       if rev[i + delta] != s[delta]
+        # use kmp shift
         isFail = true
+        delta = kmp[delta]
+        i = [i + 1, i + (delta - kmp[delta])].max
         break
       end
       delta += 1
     end
     if isFail
-      # use kmp shift
-      i = (i + delta) - kmp[i]
       next
     else
       return rev.slice(0, i) + s
@@ -46,3 +50,11 @@ def shortest_palindrome(s)
 end
 
 # @lc code=end
+
+if __FILE__ == $0
+  p "#{getKmp "aacecaaa"}"
+  p "#{getKmp "abcd"}"
+  p "#{getKmp "ababb"}"
+  p "#{shortest_palindrome "abcd"}"
+  p "#{shortest_palindrome "babbbabbaba"}"
+end
