@@ -34,9 +34,6 @@ def calculate(s)
         end
     end
 
-    p stack
-    p symbols
-
     result = stack[0]
     stack = stack[1..-1]
     while stack.length > 0
