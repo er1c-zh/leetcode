@@ -9,105 +9,75 @@
 # @param {Integer} target
 # @return {String[]}
 def add_operators(num, target)
-    return helper Array.new, num, target
-end
-
-def helper stack, s, target
-    if s == ''
-        if target == eval(stack)
-            return [stack.join]
-        else
-            return []
-        end
-    end
-    result = Array.new
-    ['', '+', '-', '*'].each{
-        |op|
-        if op == ''
-            stack.push s[0]
-            result = result.concat(helper(stack, s[1..-1], target))
-            stack.pop
-        elsif s.length > 1
-            stack.push(s[0], op)
-            result = result.concat helper(stack, s[1..-1], target)
-            stack.pop
-            stack.pop
+    result = []
+    (1..num.length - 1).each_index{
+        |idx|
+        s = num[0..idx]
+        result.concat helper([s.to_i], num[idx..-1], target, s.to_i)
+        if num[0] == '0'
+            break
         end
     }
     return result
 end
 
-def eval opList
-    # p opList
-    val = 0
-    stack = Array.new
-
-    cur = nil
-    opList.each{
+def helper stack, num, target, cur
+    if s.length == 0
+        return cur == target ? [stack.join] : []
+    end
+    result = []
+    ['+', '-', '*'].each{
         |op|
-        if ['-', '+', '*'].include? op
-            stack.push cur, op
-            cur = nil
-        else
-            if cur == 0
-                # illegal expr
-                return nil
-            end
-            cur = cur == nil ? op.to_i : cur * 10 + op.to_i
-        end
-    }
-    if cur != nil
-        stack.push cur
-    end
+        (1..num.length - 1).each_index{
+            |idx|
+            s = num[0..idx]
+            nextVal = s.to_i
 
-    # p stack
+            _cur = cur
 
-    stackNumber, stackAction = Array.new, Array.new
-
-    stack.each{
-        |v|
-        if ['-', '+', '*'].include? v
-            while !stackAction.empty?
-                if v == '*' && stackAction[-1] != '*'
-                    break
-                end
-                stackNumber.push stackAction.pop
-            end
-            stackAction.push v
-        else
-            stackNumber.push v
-        end
-    }
-
-    while stackAction.length > 0
-        stackNumber.push stackAction.pop
-    end
-
-    # p stackNumber
-
-    stack = Array.new
-
-    stackNumber.each{
-        |v|
-        if ['-', '+', '*'].include? v
-            case v
-            when '-'
-                stack.push(- stack.pop + stack.pop)
+            case op
             when '+'
-                stack.push(stack.pop + stack.pop)
-            else
-                stack.push(stack.pop * stack.pop)
+                _cur += nextVal
+            when '-'
+                _cur -= nextVal
+            else '*'
+                preOp = ''
+                valFix = 0
+                (0..stack.length - 1).each{
+                    |delta|
+                    idx = stack.length - 1 - delta
+                    if ['-', '+'].include? stack[idx]
+                        if stack[idx] == '-'
+                            _cur += valFix
+                            cur -= valFix * nextVal
+                        else
+                            _cur -= valFix
+                            cur += valFix * nextVal
+                        end
+                        break
+                    elsif stack[idx] != '*'
+                        valFix += stack[idx] * 10
+                    end
+                }
             end
-        else
-            stack.push v
-        end
-    }
 
-    if stack.length != 1
-        p "unreachable eval"
-    end
-    return stack[0]
+
+            stack.push 'op' s.to_i
+
+
+
+            result.concat helper(stack, num[idx..-1], target, nextVal)
+            stack.pop
+            stack.pop
+        }
+    }
+    return result
 end
+
+# ['', '+', '-', '*'].each{
+#     |op|
+# }
+
 # @lc code=end
 
 if __FILE__ == $0
