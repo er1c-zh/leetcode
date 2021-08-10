@@ -8,41 +8,44 @@
 # @param {Integer[]} nums
 # @return {Integer}
 def max_coins(nums)
-    s = nums.length + 1
-    cache = Array.new(s){
-        Array.new(s){
-            Array.new(101){
-                Array.new(101){
-                    -1
-                }
-            }
+    n = [1] + nums + [1]
+    l = n.length
+    dp = Array.new(l){
+        Array.new(l){
+            -1
         }
     }
-    return helper(nums, 0, nums.length - 1, 1, 1, cache)
-end
-def helper(nums, i, j, l, r, cache)
-    if cache[i][j][l][r] != -1
-        return cache[i][j][l][r]
-    end
-    if i > j
-        return 0
-    end
-    if i == j
-        return nums[i] * l * r
-    end
-    max = 0
-    (i..j).each{
-        |k|
-        v = nums[k]
-        tmp = v * l * r
-        tmp += helper(nums, i, k - 1, l, v, cache)
-        tmp += helper(nums, k + 1, j, v, r, cache)
-        if tmp > max
-            max = tmp
-        end
+    (2..l - 1).each{
+        |delta|
+        (0..l - 1).each{
+            |i|
+            j = i + delta
+            if j >= l
+                break
+            end
+            ri, rj = i + 1, j - 1
+            if ri == rj
+                dp[i][j] = n[ri] * n[i] * n[j]
+            else
+                max = 0
+                (ri..rj).each{
+                    |rk|
+                    tmp = n[rk] * n[i] * n[j]
+                    if rk > ri
+                        tmp += dp[i][rk]
+                    end
+                    if rk < rj
+                        tmp += dp[rk][j]
+                    end
+                    if tmp > max
+                        max = tmp
+                    end
+                }
+                dp[i][j] = max
+            end
+        }
     }
-    cache[i][j][l][r] = max
-    return max
+    return dp[0][l - 1]
 end
 # @lc code=end
 
