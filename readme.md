@@ -1,10 +1,12 @@
-# leetcode in ruby
+# Leetcode in ruby
 
-## some question
+## Some question
 
 ### **Ruby** do **NOT** use `class Node`
 
-leetcode will overwrite `Node` this will make runtime error.
+Leetcode will overwrite `Node` this will make runtime error.
+
+Leetcode import an algorithm lib which has a class named `Node`.
 
 ```plain
 // 异常的情况：会一直出现这个问题，本地运行是成功的。
@@ -15,7 +17,7 @@ Line 43 in solution.rb (insert)
 Line 180 in solution.rb (<main>)
 ```
 
-## some interesting easy problems
+## Interesting problems
 
 1. 169
 1. 172
@@ -24,3 +26,5 @@ Line 180 in solution.rb (<main>)
 1. 310 避免思路僵化
 1. 316 贪心的题目
 1. 319 智力题
+1. 324 快速选择获取中位数，O(n)时间复杂度，算法导论第九章。
+1. 327 分治时可以叠加排序来做一些搜索上的优化
