@@ -1,5 +1,13 @@
 # Leetcode in ruby
 
+## memo
+
+```shell
+./contest.sh 999
+./contest.sh 999 bi
+make clean # 归档文件
+```
+
 ## Some question
 
 ### **Ruby** do **NOT** use `class Node`
