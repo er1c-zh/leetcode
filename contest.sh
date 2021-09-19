@@ -7,6 +7,4 @@ if [[ $2 = 'bi' ]]; then
     PREFIX='biweekly-contest-'
 fi
 
-PREFIX=$A_PATH$PREFIX
-
-cp ./$PREFIX'template.rb' ./$PREFIX$1'.rb'
+cp ./$A_PATH$PREFIX'template.rb' ./$PREFIX$1'.rb'
