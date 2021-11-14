@@ -173,17 +173,30 @@ def max_task_assign(tasks, workers, pills, strength)
     tasks.sort!
     workers.sort!
     cache = Hash.new{Hash.new{Hash.new}} # cache[ti][wi][pill_cnt]
-    stack = [[0, 0, pills]]
+    stack = [[0, 0, pills, 0]]
     result = 0
-    while !stack.empty
+    while !stack.empty?
         cur = stack.pop
-        ti, wi, cnt = cur[0], cur[1], cur[2]
+        ti, wi, cnt, r = cur[0], cur[1], cur[2], cur[3]
+        if ti >= tasks.length || wi >= workers.length
+            if result < r
+                result = r
+            end
+            next
+        end
         task, worker = tasks[ti], workers[wi]
         if task <= worker
+            stack.push([ti + 1, wi + 1, cnt, r + 1])
+        elsif task > worker + strength || cnt == 0
+            stack.push([ti, wi + 1, cnt, r])
+        else
+            stack.push([ti + 1, wi + 1, cnt - 1, r + 1])
+            stack.push([ti, wi + 1, cnt, r])
+        end
     end
     return result
 end
 
 if __FILE__ == $0
-    puts "#{maximum_beauty([[1,2],[3,2],[2,4],[5,6],[3,5]],[1,2,3,4,5,6])}"
+    puts "#{max_task_assign([3,2,1],[0,3,3] ,1 ,1)}"
 end
