@@ -10,32 +10,49 @@
 # @param {Integer} target_capacity
 # @return {Boolean}
 def can_measure_water(jug1_capacity, jug2_capacity, target_capacity)
-    set = Hash.new()
+    if jug1_capacity + jug2_capacity < target_capacity
+        return false
+    end
+    if jug1_capacity == 0 || jug2_capacity == 0
+        return target_capacity == 0 || jug1_capacity + jug2_capacity == 0
+    end
+    return target_capacity % jug1_capacity.gcd(jug2_capacity) == 0
+end
+def can_measure_water_tle(jug1_capacity, jug2_capacity, target_capacity)
+    set = Hash.new
     stack = [[0, 0]]
     while !stack.empty?
         cur = stack.pop
-        set[cur] = true
+        if set["%d_%d" % [cur[0], cur[1]]] == true
+            next
+        end
+        set["%d_%d" % [cur[0], cur[1]]] = true
+        if cur[0] + cur[1] == target_capacity
+            return true
+        end
         x, y = cur[0], cur[1]
-        [
-            [jug1_capacity, y],
-            [x, jug2_capacity],
-            [0, y],
-            [x, 0],
-            [[0, x - (jug2_capacity - y)].max, [x + y, jug2_capacity].min],
-            [[x + y, jug1_capacity].min, [0, y - (jug1_capacity - x)].max],
-        ].each{
-            |v|
-            if v[0] + v[1] == target_capacity
-                return true
-            end
-            if set[v] == true
-                next
-            else
-                stack.append v
-            end
-        }
+        stack.append [jug1_capacity, y]
+        stack.append [x, jug2_capacity]
+        stack.append [0, y]
+        stack.append [x, 0]
+        stack.append [emax(0, x - (jug2_capacity - y)), emin(x + y, jug2_capacity)]
+        stack.append [emin(x + y, jug1_capacity), emax(0, y - (jug1_capacity - x))]
     end
     return false
+end
+def emin(v1, v2)
+    if v1 > v2
+        return v2
+    else
+        return v1
+    end
+end
+def emax(v1, v2)
+    if v1 > v2
+        return v1
+    else
+        return v2
+    end
 end
 # @lc code=end
 
