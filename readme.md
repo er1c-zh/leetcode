@@ -56,6 +56,7 @@ Line 180 in solution.rb (<main>)
 1. 514 环形数组计算两个idx的最小距离 `[(i - j).abs, n - (i - j).abs].min`
 1. 546 剪枝 + 区间dp + 如何设计dp中的状态表示 / 递归dp来实现剪枝
 1. 552 原地dp过TLE
+1. 556 下一个更大的数字，找到第一个下降的v/将最小大于v的值提前/重排suffix
 
 # dalao的经验！
 
