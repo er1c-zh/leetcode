@@ -57,6 +57,7 @@ Line 180 in solution.rb (<main>)
 1. 546 剪枝 + 区间dp + 如何设计dp中的状态表示 / 递归dp来实现剪枝
 1. 552 原地dp过TLE
 1. 556 下一个更大的数字，找到第一个下降的v/将最小大于v的值提前/重排suffix
+1. 592 最小公倍数 * 最大公约数 == 两数乘积 分子 numerator 坟墓 denominator
 
 # dalao的经验！
 
